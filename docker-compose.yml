@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  uph_web:
+    build: ./web
+    restart: always
+    depends_on:
+      - uph_db
+    volumes:
+      - ./public_html:/var/www/html
+    networks:
+      - backend
+#      - web_int #for reverse proxy
+    ports: #comment if using reverse proxy
+      - 80:80 #comment if using reverse proxy
+  uph_db:
+    image: mariadb:10.0.38
+    restart: always
+    environment:
+      MYSQL_DATABASE: web_db
+      MYSQL_USER: web_usr
+      MYSQL_PASSWORD: blablabla
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db_data:/var/lib/mysql
+    networks: 
+      - backend
+#      - web_int #for reverse proxy
+
+volumes:
+  db_data:
+
+networks: #for reverse proxy
+  backend:
+#  web_int:
+#    external:
+#      name: web_int

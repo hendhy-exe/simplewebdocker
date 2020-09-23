@@ -1,0 +1,8 @@
+FROM php:7.2.33-apache
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install opcache
+RUN pecl install redis && docker-php-ext-enable redis
+RUN a2enmod expires
+RUN a2enmod ext_filter
+RUN a2enmod headers
+RUN cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/
